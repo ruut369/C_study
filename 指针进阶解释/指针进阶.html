@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="never" />
+    <meta name="description" content=" " />
+    <meta property="og:description" content="" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>图解C语言中数组指针、指针数组、函数指针、函数指针数组、指向函数指针数组的指针</title>
+    <script>
+        var currentBlogId = 682197;
+        var currentBlogApp = 'wufeiwua';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Custom';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        window.cb_enable_mathjax = true;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'github-gist';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;
+    </script>
+    <script>
+        window.currentPostId = 15725703;
+        window.currentPostDateAdded = '2021-12-23 23:39';
+    </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script
+        src="https://www-cdn.cnblogs.com/js/blog-common.min.js?v=txrn__NCEwpwE4hoDVKKvQwIcs9U9YOovluImiRlZnE"></script>
+    <script>updateCustomBlogReferrer();</script>
+
+
+
+</head>
+
+<body class="skin-custom no-navbar mathjax2">
+
+    <div id="page_begin_html">
+        <div class="light-loading">
+            <div class="box">
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="mainContent">
+            <div class="forFlow">
+                <div id="post_detail">
+                    <!--done-->
+                    <div id="topics">
+                        <div class="post">
+                            <h1 class="postTitle">
+
+
+                            </h1>
+                            <div class="clear"></div>
+                            <div class="postBody">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <p><br>
+                                        关于C语言中数组指针、函数指针、指针数组、函数指针数组、指向函数指针数组的指针一直比较绕，稍微整理一下。</p>
+                                    <h2 id="到底是指针还是数组">到底是指针还是数组？</h2>
+                                    <p>其实到底是指针还是数组还是看变量名与<code>[]</code>先结合还是<code>*</code>先结合。我们知道C语言中的优先级
+                                        <code>() = [] &gt; *</code>，且<code>()</code>和<code>[]</code>是<code>从左向右</code>结合，所以<code>int * arr[6]</code>其实是一个数组，因为
+                                        <code>arr</code>先与<code>[]</code>结合定义一个数组，其次才是<code>*</code>。然而<code>int (*pt)[6]</code>是一个指针，因为
+                                        <code>()</code>的优先级和<code>[]</code>相同，且从左向右结合，导致
+                                        <code>pt</code>先与<code>*</code>结合定义一个指针
+                                    </p>
+                                    <h2 id="指针数组">指针数组</h2>
+                                    <p><code>int * arr[6]</code>指针数组首先是个数组。数组中的每个（6个）元素都是指针（指向 int 类型的指针）</p>
+                                    <p><img src="img/88d2f2d9c367c3af18ba8681712ddbac1.png" alt="指针数组" loading="lazy">
+                                    </p>
+                                    <h2 id="数组指针">数组指针</h2>
+                                    <p><code>int (*pt)[6]</code>数组指针首先是个指针。指针指向一个数组（包含 6 个元素），该数组每个元素都是 int 类型。pt
+                                        是指针的名字，数组的名字未知。指针的值是某个数组的地址</p>
+                                    <p><img src="img/713b68bf375b89581cdf3972f5d8ebe02.png" alt="数组指针" loading="lazy">
+                                    </p>
+                                    <h2 id="函数指针">函数指针</h2>
+                                    <p><code>int * (*pt)(char *c)</code>函数指针首先是个指针。指针指向一个函数，该函数返回一个 int 类型指针，接受一个
+                                        char 类型指针的形参。pt 是指针的名字，函数的名字未知。指针的值是某个函数的地址</p>
+                                    <p><img src="img/36f0517fd9350630e92c0b3cab6877313.png" alt="函数指针" loading="lazy">
+                                    </p>
+                                    <h2 id="函数指针数组">函数指针数组</h2>
+                                    <p><code>int * (*arr[6])(char *c)</code>函数指针数组首先是个数组。这个数组（包含 6
+                                        个元素），每个元素都是一个函数指针。这些指针都指向某一个函数，该函数返回一个 int 类型的指针，接受一个 char 类型指针的形参</p>
+                                    <p><img src="img/3e9779436b2198fab11ada535339dbfb4.png" alt="函数指针数组" loading="lazy">
+                                    </p>
+                                    <h2 id="指向函数指针数组的指针">指向函数指针数组的指针</h2>
+                                    <p><code>int * (*(*pt)[6])(char *c)</code>指向函数指针数组的指针首先是个指针。指针指向一个数组（包含 6
+                                        个元素），该数组每个元素都是一个函数指针。这些指针都指向某一个函数，该函数返回一个 int 类型的指针，接受一个 char 类型指针的形参</p>
+                                    <p><img src="img/fec9f058240a4545950e905d57a64cb45.png" alt="指向函数指针数组的指针"
+                                            loading="lazy"></p>
+
+                                </div>
+                                <div class="clear"></div>
+                                <div id="blog_post_info_block" role="contentinfo">
+                                    <div id="blog_post_info"></div>
+                                    <div class="clear"></div>
+                                    <div id="post_next_prev"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <script>
+                    var cb_entryId = 15725703, cb_entryCreatedDate = '2021-12-23 23:39', cb_postType = 1, cb_postTitle = '图解C语言中数组指针、指针数组、函数指针、函数指针数组、指向函数指针数组的指针';
+                    var allowComments = true, cb_blogId = 682197, cb_blogApp = 'wufeiwua', cb_blogUserGuid = '11ba83ea-5c4c-4a07-cc7f-08d8820b421f';
+                    mermaidRender.render()
+                    markdown_highlight()
+                    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+                </script>
+                <a id="!comments"></a>
+                <div id="comment_form" class="commentform">
+                    <a name="commentform"></a>
+                    <div id="divCommentShow"></div>
+                </div>
+                <div id="comment_form_container"></div>
+                <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+                <div id="cnblogs_ch"></div>
+                <div id="opt_under_post"></div>
+                <div id="cnblogs_c1" class="under-post-card">
+                    <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;"></div>
+                </div>
+                <div id="under_post_card1"></div>
+                <div id="under_post_card2"></div>
+                <div id="HistoryToday" class="under-post-card"></div>
+                <script type="text/javascript">
+                    var commentManager = new blogCommentManager();
+                    commentManager.renderComments(0);
+                    fixPostBody();
+                    window.footnoteTipManager.generateFootnoteTips();
+
+                    window.tocManager.displayDisableTocTips = false;
+                    window.tocManager.generateToc();
+
+                    setTimeout(function () { countViews(cb_blogId, cb_entryId); }, 50);
+
+                    deliverT2();
+                    deliverC1C2();
+                    loadNewsAndKb();
+
+                    LoadPostCategoriesTags(cb_blogId, cb_entryId);
+
+                    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+                    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+                    loadOptUnderPost();
+                    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+            </div>
+
+</body>
+
+</html>
